@@ -1,24 +1,23 @@
 <?php
-function http_request_get($url) {
-    // persiapkan curl
-    $ch = curl_init(); 
- 
-    // set url 
+function http_request_get($url)
+{
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
- 
-    // konversi hasil ke string
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
- 
-     // deteksi user agent
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'); 
- 
-    // eksekusi
-    $output = curl_exec($ch); 
- 
-    // tutup curl 
-    curl_close($ch);      
- 
-    // mengembalikan hasil curl
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    // ✅ Tambahkan identitas aplikasi kamu di sini
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'User-Agent: RicoAditioNewsClient/1.0 (+http://localhost/rest-client3)'
+    ]);
+
+    $output = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        echo 'Curl error: ' . curl_error($ch);
+    }
+
+    curl_close($ch);
     return $output;
 }
 ?>
